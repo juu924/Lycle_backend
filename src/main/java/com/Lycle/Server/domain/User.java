@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
 @Entity
@@ -17,10 +19,10 @@ public class User {
     @Column(nullable = false, length = 50)
     private String email;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 20)
     private String password;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 20)
     private String nickname;
 
     @Column(nullable = true)
