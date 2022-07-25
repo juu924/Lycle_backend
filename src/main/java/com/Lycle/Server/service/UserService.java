@@ -1,6 +1,7 @@
 package com.Lycle.Server.service;
 
 import com.Lycle.Server.domain.jpa.UserRepository;
+import com.Lycle.Server.dto.User.SearchUserWrapper;
 import com.Lycle.Server.dto.User.UserJoinDto;
 import com.Lycle.Server.dto.User.UserLoginDto;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,19 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
-   public Long searchUser(UserLoginDto userLoginDto){
+   public SearchUserWrapper searchUser(UserLoginDto userLoginDto){
       return userRepository.findByEmailAndPassword(userLoginDto.getEmail(),userLoginDto.getPassword())
-              .orElseThrow(()->new IllegalArgumentException("존재 하지 않는 Id 입니다.")).getId();
+              .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 id 입니다."));
+  }
+
+  @Transactional(readOnly = true)
+    public boolean verifyEmail(String email){
+      return userRepository.existsByEmail(email);
+  }
+
+  @Transactional(readOnly = true)
+    public boolean verifyNickname(String nickname){
+      return userRepository.existsByNickname(nickname);
   }
 
 
