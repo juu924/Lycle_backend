@@ -2,7 +2,6 @@ package com.Lycle.Server.controller;
 
 import com.Lycle.Server.dto.BasicResponse;
 import com.Lycle.Server.dto.User.UserJoinDto;
-import com.Lycle.Server.dto.User.UserLoginDto;
 import com.Lycle.Server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,8 +28,14 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public ResponseEntity<BasicResponse> searchUser(@RequestBody UserLoginDto userLoginDto) {
-        BasicResponse searchUser = BasicResponse.builder().code(HttpStatus.OK.value()).httpStatus(HttpStatus.OK).message("로그인에 성공했습니다.").count(1).result(Collections.singletonList(userService.searchUser(userLoginDto))).build();
+    public ResponseEntity<BasicResponse> searchUser(@RequestParam String email, @RequestParam String password) {
+        BasicResponse searchUser = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("로그인에 성공했습니다.")
+                .count(1)
+                .result(Collections.singletonList(userService.searchUser(email, password))).
+                build();
         return new ResponseEntity<>(searchUser, searchUser.getHttpStatus());
     }
 
