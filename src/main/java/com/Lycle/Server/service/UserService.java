@@ -3,7 +3,6 @@ package com.Lycle.Server.service;
 import com.Lycle.Server.domain.jpa.UserRepository;
 import com.Lycle.Server.dto.User.SearchUserWrapper;
 import com.Lycle.Server.dto.User.UserJoinDto;
-import com.Lycle.Server.dto.User.UserLoginDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +19,8 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
-   public SearchUserWrapper searchUser(UserLoginDto userLoginDto){
-      return userRepository.findByEmailAndPassword(userLoginDto.getEmail(),userLoginDto.getPassword())
+   public SearchUserWrapper searchUser(String email, String password){
+      return userRepository.findByEmailAndPassword(email,password)
               .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 id 입니다."));
   }
 
