@@ -19,7 +19,11 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<BasicResponse> joinUser(@RequestBody UserJoinDto userJoinDto) {
         userService.saveUser(userJoinDto);
-        BasicResponse joinUserResponse = BasicResponse.builder().code(HttpStatus.OK.value()).httpStatus(HttpStatus.CREATED).message("회원가입이 완료되었습니다.").build();
+        BasicResponse joinUserResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.CREATED)
+                .message("회원가입이 완료되었습니다.")
+                .build();
         return new ResponseEntity<>(joinUserResponse, joinUserResponse.getHttpStatus());
 
     }
@@ -35,10 +39,18 @@ public class UserController {
         BasicResponse verifyResponse;
 
         if (userService.verifyEmail(email) == true) {
-            verifyResponse = BasicResponse.builder().code(HttpStatus.CONFLICT.value()).httpStatus(HttpStatus.CONFLICT).message("이미 사용 중인 이메일 입니다.").build();
+            verifyResponse = BasicResponse.builder()
+                    .code(HttpStatus.CONFLICT.value())
+                    .httpStatus(HttpStatus.CONFLICT)
+                    .message("이미 사용 중인 이메일 입니다.")
+                    .build();
 
         } else {
-            verifyResponse = BasicResponse.builder().code(HttpStatus.OK.value()).httpStatus(HttpStatus.OK).message("사용이 가능한 이메일 입니다.").build();
+            verifyResponse = BasicResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("사용이 가능한 이메일 입니다.")
+                    .build();
         }
 
         return new ResponseEntity<>(verifyResponse, verifyResponse.getHttpStatus());
@@ -48,10 +60,18 @@ public class UserController {
     public ResponseEntity<BasicResponse> verifyNickname(@RequestParam String nickname) {
         BasicResponse verifyResponse;
         if (userService.verifyNickname(nickname) == true) {
-            verifyResponse = BasicResponse.builder().code(HttpStatus.CONFLICT.value()).httpStatus(HttpStatus.CONFLICT).message("이미 사용 중인 이메일 입니다.").build();
+            verifyResponse = BasicResponse.builder()
+                    .code(HttpStatus.CONFLICT.value())
+                    .httpStatus(HttpStatus.CONFLICT)
+                    .message("이미 사용 중인 이메일 입니다.")
+                    .build();
 
         } else {
-            verifyResponse = BasicResponse.builder().code(HttpStatus.OK.value()).httpStatus(HttpStatus.OK).message("사용이 가능한 닉네임 입니다.").build();
+            verifyResponse = BasicResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("사용이 가능한 닉네임 입니다.")
+                    .build();
         }
 
         return new ResponseEntity<>(verifyResponse, verifyResponse.getHttpStatus());
