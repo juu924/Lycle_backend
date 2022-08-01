@@ -36,7 +36,6 @@ public class UserController {
                 .count(1)
                 .result(Collections.singletonList(userService.searchUser(email,password)))
                 .build();
-                
         return new ResponseEntity<>(searchUser, searchUser.getHttpStatus());
     }
 
@@ -82,6 +81,40 @@ public class UserController {
 
         return new ResponseEntity<>(verifyResponse, verifyResponse.getHttpStatus());
     }
+
+    @GetMapping("/friend")
+    public ResponseEntity<BasicResponse> searchFriend(@RequestParam String nickname) {
+        BasicResponse response;
+        if (userService.verifyNickname(nickname) == true) {
+            response = BasicResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .httpStatus(HttpStatus.OK)
+                    .message("존재하는 사용자 입니다. 친구 맺기가 가능합니다.")
+                    .build();
+        } else {
+            response = BasicResponse.builder()
+                    .code(HttpStatus.NOT_FOUND.value())
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .message("존재하지 않는 사용자 입니다.")
+                    .build();
+        }
+        return new ResponseEntity<>(response, response.getHttpStatus());
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<BasicResponse> searchProfile(@RequestParam Long id){
+        BasicResponse profileResponse;
+        profileResponse = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("회원 정보 조회가 완료되었습니다.")
+                .count(1)
+                .result(Collections.singletonList(userService.searchProfile(id)))
+                .build();
+        return new ResponseEntity<>(profileResponse, profileResponse.getHttpStatus());
+    }
+
+
 
 
 }
