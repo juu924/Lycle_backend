@@ -34,8 +34,9 @@ public class UserController {
                 .httpStatus(HttpStatus.OK)
                 .message("로그인에 성공했습니다.")
                 .count(1)
-                .result(Collections.singletonList(userService.searchUser(email, password))).
-                build();
+                .result(Collections.singletonList(userService.searchUser(email,password)))
+                .build();
+                
         return new ResponseEntity<>(searchUser, searchUser.getHttpStatus());
     }
 
