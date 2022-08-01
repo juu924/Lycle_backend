@@ -36,6 +36,7 @@ public class UserController {
                 .count(1)
                 .result(Collections.singletonList(userService.searchUser(email,password)))
                 .build();
+                
         return new ResponseEntity<>(searchUser, searchUser.getHttpStatus());
     }
 
