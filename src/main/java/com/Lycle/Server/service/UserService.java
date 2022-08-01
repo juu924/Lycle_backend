@@ -39,4 +39,5 @@ public class UserService {
     public SearchProfileWrapper searchProfile(Long id) {
         return userRepository.findUserById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 입니다."));
     }
+    
 }
