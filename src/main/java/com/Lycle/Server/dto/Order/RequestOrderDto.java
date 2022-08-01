@@ -2,8 +2,10 @@ package com.Lycle.Server.dto.Order;
 
 import com.Lycle.Server.domain.Orders;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor
 public class RequestOrderDto {
     private Long userId;
