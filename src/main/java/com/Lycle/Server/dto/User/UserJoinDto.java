@@ -2,10 +2,12 @@ package com.Lycle.Server.dto.User;
 
 import com.Lycle.Server.domain.User;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
+@Getter
 @NoArgsConstructor
 public class UserJoinDto {
     @NotBlank(message = "이메일 주소를 입력해주세요.")
