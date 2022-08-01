@@ -1,6 +1,6 @@
 package com.Lycle.Server.dto.Order;
 
-import com.Lycle.Server.domain.Order;
+import com.Lycle.Server.domain.Orders;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
@@ -12,8 +12,8 @@ public class RequestOrderDto {
     private Integer quantity;
     private Long totalPrice;
 
-    public Order toEntity(){
-        Order order = Order.builder()
+    public Orders toEntity(){
+        Orders order = Orders.builder()
                 .userId(userId)
                 .itemId(itemId)
                 .addressId(addressId)
