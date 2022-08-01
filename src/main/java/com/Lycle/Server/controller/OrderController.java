@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+
 @RestController
 @RequiredArgsConstructor
 public class OrderController {
@@ -22,6 +24,8 @@ public class OrderController {
                 .code(HttpStatus.CREATED.value())
                 .httpStatus(HttpStatus.CREATED)
                 .message("주문이 성공적으로 생성되었습니다.")
+                .count(1)
+                .result(Collections.singletonList(orderService.makeOrder(requestOrderDto)))
                 .build();
 
         return new ResponseEntity<>(orderResponse, orderResponse.getHttpStatus());
