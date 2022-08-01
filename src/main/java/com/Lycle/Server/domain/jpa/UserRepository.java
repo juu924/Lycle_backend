@@ -4,7 +4,6 @@ import com.Lycle.Server.domain.User;
 import com.Lycle.Server.dto.User.SearchProfileWrapper;
 import com.Lycle.Server.dto.User.SearchUserWrapper;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
