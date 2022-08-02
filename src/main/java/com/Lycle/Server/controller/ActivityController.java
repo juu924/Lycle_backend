@@ -32,13 +32,26 @@ public class ActivityController {
     @PutMapping("/activity")
     public ResponseEntity<BasicResponse> finishActivity(@RequestBody FinishActivityDto finishActivityDto){
         BasicResponse activityResponse = BasicResponse.builder()
-                .code(HttpStatus.OK.value())
+                .code(HttpStatus.CREATED.value())
                 .httpStatus(HttpStatus.CREATED)
                 .message("챌린지 종료 시간이 기록되었습니다.")
                 .count(1)
                 .result(Collections.singletonList(activityService.finishActivity(finishActivityDto)))
                 .build();
         return new ResponseEntity<>(activityResponse,activityResponse.getHttpStatus());
+    }
+
+    @GetMapping("/activity/{userId}")
+    public ResponseEntity<BasicResponse> searchAllAcitivity(@PathVariable Long userId){
+        BasicResponse allActivity = BasicResponse.builder()
+                .code(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .message("챌린지 조회가 완료 되었습니다.")
+                .count(activityService.searchActivity(userId).size())
+                .result(Collections.singletonList(activityService.searchActivity(userId)))
+                .build();
+
+        return new ResponseEntity<>(allActivity, allActivity.getHttpStatus());
     }
 
 }
