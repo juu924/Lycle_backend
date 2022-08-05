@@ -15,6 +15,7 @@ import java.util.Collections;
 public class UserController {
     private final UserService userService;
 
+
     @PostMapping("/join")
     public ResponseEntity<BasicResponse> joinUser(@RequestBody UserJoinDto userJoinDto) {
         userService.saveUser(userJoinDto);
@@ -27,14 +28,12 @@ public class UserController {
 
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<BasicResponse> searchUser(@RequestParam String email, @RequestParam String password) {
         BasicResponse searchUser = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("로그인에 성공했습니다.")
-                .count(1)
-                .result(Collections.singletonList(userService.searchUser(email,password)))
                 .build();
         return new ResponseEntity<>(searchUser, searchUser.getHttpStatus());
     }
@@ -101,8 +100,22 @@ public class UserController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
+
+    @PutMapping("/friend")
+    public ResponseEntity<BasicResponse> addFriend(@RequestParam Long id, @RequestParam String nickname) {
+        userService.addFriends(id, nickname);
+        BasicResponse basicResponse;
+        basicResponse = BasicResponse.builder()
+                .count(HttpStatus.CREATED.value())
+                .httpStatus(HttpStatus.CREATED)
+                .message("사용자와 친구 맺기가 완료 되었습니다.")
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
+
     @GetMapping("/profile")
-    public ResponseEntity<BasicResponse> searchProfile(@RequestParam Long id){
+    public ResponseEntity<BasicResponse> searchProfile(@RequestParam Long id) {
         BasicResponse profileResponse;
         profileResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
@@ -113,8 +126,5 @@ public class UserController {
                 .build();
         return new ResponseEntity<>(profileResponse, profileResponse.getHttpStatus());
     }
-
-
-
 
 }
