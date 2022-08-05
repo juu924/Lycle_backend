@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
+
+import javax.servlet.http.Cookie;
 import java.util.List;
 
 @Builder

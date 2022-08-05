@@ -38,4 +38,5 @@ public class User {
         this.sharedId = sharedId;
         this.totalTime = totalTime;
     }
+
 }
