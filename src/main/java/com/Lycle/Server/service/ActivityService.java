@@ -29,7 +29,9 @@ public class ActivityService {
         Activity activity = activityRepository.findById(id).orElseThrow(
                 () ->new IllegalArgumentException("존재 하지 않는 챌린지 입니다."));
 
-        activity.update(finishActivityDto.isFinishChecked(), finishActivityDto.isRewardChecked());
+        activity.update(finishActivityDto.getCategory(), finishActivityDto.getActivityTime(),
+                finishActivityDto.isFinishChecked(), finishActivityDto.isRewardChecked());
+
         return activity;
     }
 
@@ -41,8 +43,9 @@ public class ActivityService {
             //yy/mm/dd HH:mm 에서 먼저 날짜와 시간을 분리하여 챌린지 일자로 지정
             StringTokenizer start = new StringTokenizer(activityList.get(i).getCreatedDate());
             searchActivityList.get(i).setActivityDate(start.nextToken());
-            //활동 이름과 챌린지 완료 여부 불러오기
+            //활동 이름과 챌린지 활동 시간, 챌린지 완료 여부 불러오기
             searchActivityList.get(i).setActivityName(activityList.get(i).getCategory());
+            searchActivityList.get(i).setActivityTime(activityList.get(i).getActivityTime());
             searchActivityList.get(i).setFinishedChecked(activityList.get(i).isFinishChecked());
         }
         return searchActivityList;

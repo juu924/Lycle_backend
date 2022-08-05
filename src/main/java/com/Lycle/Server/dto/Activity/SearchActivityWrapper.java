@@ -8,5 +8,6 @@ import lombok.Setter;
 public class SearchActivityWrapper {
     private String activityDate;
     private String activityName;
+    private String activityTime;
     private boolean finishedChecked;
 }

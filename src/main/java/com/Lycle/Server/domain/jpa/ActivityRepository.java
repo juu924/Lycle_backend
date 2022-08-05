@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long>{
-    @Query(value = "SELECT a.createdDate, a.category, a.finishChecked " +
+    @Query(value = "SELECT a.createdDate, a.category, a.activityTime,a.finishChecked " +
             "FROM Activity a WHERE a.userId =: userId order by a.createdDate desc", nativeQuery = true)
     List<Activity> findActivitiesByUserId(Long userId);
 }

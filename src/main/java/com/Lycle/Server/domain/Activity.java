@@ -20,6 +20,9 @@ public class Activity extends BaseTimeEntity {
     @Column(length = 100, nullable = false)
     private String category;
 
+    @Column(length = 50, nullable = true)
+    private String activityTime;
+
     @Column(columnDefinition = "TINYINT(1)")
     @ColumnDefault("0")
     private boolean finishChecked;
@@ -29,15 +32,18 @@ public class Activity extends BaseTimeEntity {
     private boolean rewardChecked;
 
     @Builder
-    public Activity(Long id, Long userId, String category, boolean finishChecked, boolean rewardChecked) {
+    public Activity(Long id, Long userId, String category, String activityTime ,boolean finishChecked, boolean rewardChecked) {
         this.id = id;
         this.userId = userId;
         this.category = category;
+        this.activityTime = activityTime;
         this.finishChecked = finishChecked;
         this.rewardChecked = rewardChecked;
     }
 
-    public void update(boolean finishChecked, boolean rewardChecked){
+    public void update(String category, String activityTime ,boolean finishChecked, boolean rewardChecked){
+        this.category = category;
+        this.activityTime = activityTime;
         this.finishChecked = finishChecked;
         this.rewardChecked = rewardChecked;
     }
