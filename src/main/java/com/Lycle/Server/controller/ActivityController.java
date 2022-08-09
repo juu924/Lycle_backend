@@ -17,7 +17,7 @@ public class ActivityController {
     private final ActivityService activityService;
 
     //운동 시작 시간 기록
-    @PostMapping("/activity")
+    @PostMapping("/user/activity")
     public ResponseEntity<BasicResponse> startActivity(@RequestBody StartActivityDto startActivityDto){
         activityService.startActivity(startActivityDto);
         BasicResponse activityResponse = BasicResponse.builder()
@@ -29,7 +29,7 @@ public class ActivityController {
     }
 
     //운동 중단 시간 기록
-    @PutMapping("/activity")
+    @PutMapping("/user/activity")
     public ResponseEntity<BasicResponse> finishActivity(@RequestBody FinishActivityDto finishActivityDto){
         BasicResponse activityResponse = BasicResponse.builder()
                 .code(HttpStatus.CREATED.value())
@@ -41,8 +41,8 @@ public class ActivityController {
         return new ResponseEntity<>(activityResponse,activityResponse.getHttpStatus());
     }
 
-    @GetMapping("/activity/{userId}")
-    public ResponseEntity<BasicResponse> searchAllAcitivity(@PathVariable Long userId){
+    @GetMapping("/user/activity/{userId}")
+    public ResponseEntity<BasicResponse> searchAllActivity(@PathVariable Long userId){
         BasicResponse allActivity = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)

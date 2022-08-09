@@ -1,4 +1,4 @@
-package com.Lycle.Server.domain;
+package com.Lycle.Server.domain.User;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -29,14 +29,26 @@ public class User {
     @Column(nullable = true)
     private Long totalTime;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     @Builder
-    public User(Long id, String email,String password, String nickname, Long sharedId, Long totalTime){
+    public User(Long id, String email,String password, String nickname, Long sharedId, Long totalTime, Role role){
         this.id = id;
         this.email =email;
         this.password = password;
         this.nickname = nickname;
         this.sharedId = sharedId;
         this.totalTime = totalTime;
+        this.role = role;
     }
+
+    public String getRoleKey() {
+        return this.role.getKey();
+    }
+
+
+
 
 }
