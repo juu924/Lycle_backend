@@ -1,5 +1,6 @@
 package com.Lycle.Server.controller;
 
+import com.Lycle.Server.config.auth.UserPrincipal;
 import com.Lycle.Server.dto.BasicResponse;
 import com.Lycle.Server.dto.User.UserJoinDto;
 import com.Lycle.Server.dto.User.UserLoginDto;
@@ -7,6 +8,7 @@ import com.Lycle.Server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -16,14 +18,14 @@ import java.util.Collections;
 public class UserController {
     private final UserService userService;
 
-
     @PostMapping("/join")
     public ResponseEntity<BasicResponse> joinUser(@RequestBody UserJoinDto userJoinDto) {
-        userService.saveUser(userJoinDto);
         BasicResponse joinUserResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.CREATED)
                 .message("회원가입이 완료되었습니다.")
+                .count(1)
+                .result(Collections.singletonList(userService.saveUser(userJoinDto)))
                 .build();
         return new ResponseEntity<>(joinUserResponse, joinUserResponse.getHttpStatus());
 
@@ -106,8 +108,9 @@ public class UserController {
 
 
     @PutMapping("/user/friend")
-    public ResponseEntity<BasicResponse> addFriend(@RequestParam Long id, @RequestParam String nickname) {
-        userService.addFriends(id, nickname);
+    public ResponseEntity<BasicResponse> addFriend(Authentication authentication, @RequestParam String nickname) {
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        userService.addFriends(userPrincipal.getId(), nickname);
         BasicResponse basicResponse;
         basicResponse = BasicResponse.builder()
                 .count(HttpStatus.CREATED.value())
@@ -119,14 +122,15 @@ public class UserController {
     }
 
     @GetMapping("/user/profile")
-    public ResponseEntity<BasicResponse> searchProfile(@RequestParam Long id) {
+    public ResponseEntity<BasicResponse> searchProfile(Authentication authentication) {
         BasicResponse profileResponse;
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         profileResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("회원 정보 조회가 완료되었습니다.")
                 .count(1)
-                .result(Collections.singletonList(userService.searchProfile(id)))
+                .result(Collections.singletonList(userService.searchProfile(userPrincipal.getId())))
                 .build();
         return new ResponseEntity<>(profileResponse, profileResponse.getHttpStatus());
     }

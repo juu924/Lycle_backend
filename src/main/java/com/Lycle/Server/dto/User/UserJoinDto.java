@@ -1,16 +1,13 @@
 package com.Lycle.Server.dto.User;
 
 import com.Lycle.Server.domain.User.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class UserJoinDto {
 
 
