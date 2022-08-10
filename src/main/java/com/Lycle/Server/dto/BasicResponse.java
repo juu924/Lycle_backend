@@ -19,4 +19,5 @@ public class BasicResponse {
     private String message;
     private int count;
     private List<Object> result;
+    private String token;
 }

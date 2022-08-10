@@ -2,6 +2,7 @@ package com.Lycle.Server.controller;
 
 import com.Lycle.Server.dto.BasicResponse;
 import com.Lycle.Server.dto.User.UserJoinDto;
+import com.Lycle.Server.dto.User.UserLoginDto;
 import com.Lycle.Server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,11 +30,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<BasicResponse> searchUser(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<BasicResponse> loginUser(@RequestBody UserLoginDto userLoginDto) {
+
         BasicResponse searchUser = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("로그인에 성공했습니다.")
+                .count(1)
+                .token(userService.loginUser(userLoginDto))
                 .build();
         return new ResponseEntity<>(searchUser, searchUser.getHttpStatus());
     }
@@ -42,7 +46,7 @@ public class UserController {
     public ResponseEntity<BasicResponse> verifyEmail(@RequestParam String email) {
         BasicResponse verifyResponse;
 
-        if (userService.verifyEmail(email) == true) {
+        if (userService.verifyEmail(email)) {
             verifyResponse = BasicResponse.builder()
                     .code(HttpStatus.CONFLICT.value())
                     .httpStatus(HttpStatus.CONFLICT)
@@ -63,11 +67,11 @@ public class UserController {
     @GetMapping("/verify/nickname")
     public ResponseEntity<BasicResponse> verifyNickname(@RequestParam String nickname) {
         BasicResponse verifyResponse;
-        if (userService.verifyNickname(nickname) == true) {
+        if (userService.verifyNickname(nickname)) {
             verifyResponse = BasicResponse.builder()
                     .code(HttpStatus.CONFLICT.value())
                     .httpStatus(HttpStatus.CONFLICT)
-                    .message("이미 사용 중인 이메일 입니다.")
+                    .message("이미 사용 중인 닉네임 입니다.")
                     .build();
 
         } else {
@@ -81,10 +85,10 @@ public class UserController {
         return new ResponseEntity<>(verifyResponse, verifyResponse.getHttpStatus());
     }
 
-    @GetMapping("/friend")
+    @GetMapping("/user/friend")
     public ResponseEntity<BasicResponse> searchFriend(@RequestParam String nickname) {
         BasicResponse response;
-        if (userService.verifyNickname(nickname) == true) {
+        if (userService.verifyNickname(nickname)) {
             response = BasicResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -101,7 +105,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/friend")
+    @PutMapping("/user/friend")
     public ResponseEntity<BasicResponse> addFriend(@RequestParam Long id, @RequestParam String nickname) {
         userService.addFriends(id, nickname);
         BasicResponse basicResponse;
@@ -114,7 +118,7 @@ public class UserController {
         return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
     }
 
-    @GetMapping("/profile")
+    @GetMapping("/user/profile")
     public ResponseEntity<BasicResponse> searchProfile(@RequestParam Long id) {
         BasicResponse profileResponse;
         profileResponse = BasicResponse.builder()

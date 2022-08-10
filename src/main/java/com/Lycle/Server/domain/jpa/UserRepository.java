@@ -1,21 +1,19 @@
 package com.Lycle.Server.domain.jpa;
 
-import com.Lycle.Server.domain.User;
+import com.Lycle.Server.domain.User.User;
 import com.Lycle.Server.dto.User.SearchProfileWrapper;
 import com.Lycle.Server.dto.User.SearchUserWrapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<SearchUserWrapper> findByEmailAndPassword(String email, String password);
+    Optional<User> findByEmail(String email);
     boolean existsByEmail(String email);
     boolean existsByNickname(String nickname);
     Optional<SearchProfileWrapper>findUserById(Long id);
-
     @Query(value = "select u.id from User u where u.nickname =: nickname", nativeQuery = true)
     Long findUserByNickname(String nickname);
 

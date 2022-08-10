@@ -17,7 +17,7 @@ import java.util.Collections;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/order")
+    @PostMapping("/user/order")
     public ResponseEntity<BasicResponse> makeOrder(@RequestBody RequestOrderDto requestOrderDto){
         BasicResponse orderResponse = BasicResponse.builder()
                 .code(HttpStatus.CREATED.value())
