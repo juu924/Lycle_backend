@@ -8,16 +8,14 @@ import lombok.NoArgsConstructor;
 @Getter
 public class FinishActivityDto {
     private Long id;
-    private Long userId;
     private String category;
     private String activityTime;
     private boolean finishChecked;
     private boolean rewardChecked;
 
     @Builder
-    public FinishActivityDto(Long id,Long userId,String category,String activityTime ,boolean finishChecked, boolean rewardChecked){
+    public FinishActivityDto(Long id,String category,String activityTime ,boolean finishChecked, boolean rewardChecked){
         this.id = id;
-        this.userId = userId;
         this.category = category;
         this.activityTime = activityTime;
         this.finishChecked = finishChecked;

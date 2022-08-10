@@ -4,7 +4,6 @@ import com.Lycle.Server.domain.Activity;
 import com.Lycle.Server.domain.jpa.ActivityRepository;
 import com.Lycle.Server.dto.Activity.FinishActivityDto;
 import com.Lycle.Server.dto.Activity.SearchActivityWrapper;
-import com.Lycle.Server.dto.Activity.StartActivityDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +18,10 @@ public class ActivityService {
     private final ActivityRepository activityRepository;
 
     @Transactional
-    public Long startActivity(StartActivityDto startActivityDto){
-       return activityRepository.save(startActivityDto.toEntity()).getId();
+    public Long startActivity(Long id){
+       return activityRepository.save(Activity.builder()
+               .userId(id)
+               .build()).getId();
     }
 
     @Transactional
@@ -31,13 +32,12 @@ public class ActivityService {
 
         activity.update(finishActivityDto.getCategory(), finishActivityDto.getActivityTime(),
                 finishActivityDto.isFinishChecked(), finishActivityDto.isRewardChecked());
-
         return activity;
     }
 
     @Transactional(readOnly = true)
-    public List<SearchActivityWrapper> searchActivity(Long userId){
-        List<Activity> activityList = activityRepository.findActivitiesByUserId(userId);
+    public List<SearchActivityWrapper> searchActivity(Long id){
+        List<Activity> activityList = activityRepository.findActivitiesByUserId(id);
         List<SearchActivityWrapper> searchActivityList = new ArrayList<>();
         for(int i = 0; i < activityList.size(); i++){
             //yy/mm/dd HH:mm 에서 먼저 날짜와 시간을 분리하여 챌린지 일자로 지정

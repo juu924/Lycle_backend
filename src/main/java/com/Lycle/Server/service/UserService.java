@@ -2,7 +2,6 @@ package com.Lycle.Server.service;
 
 import com.Lycle.Server.config.auth.UserPrincipal;
 import com.Lycle.Server.config.auth.token.JwtTokenProvider;
-import com.Lycle.Server.domain.User.Role;
 import com.Lycle.Server.domain.User.User;
 import com.Lycle.Server.domain.jpa.UserRepository;
 import com.Lycle.Server.dto.User.SearchProfileWrapper;
@@ -12,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.Lycle.Server.domain.User.Role.USER;
 
 
 @Service
@@ -28,7 +29,7 @@ public class UserService {
                         .email(userJoinDto.getEmail())
                         .password(passwordEncoder.encode(userJoinDto.getPassword()))
                         .nickname(userJoinDto.getNickname())
-                        .role(Role.USER)
+                        .role(USER)
                         .build()
                 ).getId();
     }
@@ -37,9 +38,8 @@ public class UserService {
     public String loginUser(UserLoginDto userLoginDto){
         User user = userRepository.findByEmail(userLoginDto.getEmail()).orElseThrow(
                 ()-> new IllegalArgumentException("가입되지 않은 이메일 입니다."));
-
         UserPrincipal userPrincipal = new UserPrincipal(user);
-        if (!passwordEncoder.matches(user.getPassword(), userLoginDto.getPassword())) {
+        if (!passwordEncoder.matches(userLoginDto.getPassword() ,user.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
