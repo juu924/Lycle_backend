@@ -4,13 +4,16 @@ import com.Lycle.Server.domain.Orders;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class RequestOrderDto {
     private Long userId;
     private Long itemId;
-    private Long addressId;
+    private String address;
+    private String telephone;
     private Integer quantity;
     private Long totalPrice;
 
@@ -18,7 +21,8 @@ public class RequestOrderDto {
         Orders order = Orders.builder()
                 .userId(userId)
                 .itemId(itemId)
-                .addressId(addressId)
+                .address(address)
+                .telephone(telephone)
                 .quantity(quantity)
                 .totalPrice(totalPrice)
                 .build();
@@ -26,10 +30,11 @@ public class RequestOrderDto {
     }
 
     @Builder
-    public RequestOrderDto(Long userId, Long itemId, Long addressId, int quantity, Long totalPrice){
+    public RequestOrderDto(Long userId, Long itemId, String address, String telephone,int quantity, Long totalPrice){
         this.userId = userId;
         this.itemId = itemId;
-        this.addressId = addressId;
+        this.address = address;
+        this.telephone = telephone;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
     }

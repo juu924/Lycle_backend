@@ -1,6 +1,5 @@
 package com.Lycle.Server.dto.User;
 
-import com.Lycle.Server.domain.User.User;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -9,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @NoArgsConstructor
 public class UserJoinDto {
-
 
     @NotBlank(message = "이메일 주소를 입력해주세요.")
     private String email;

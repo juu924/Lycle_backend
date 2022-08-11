@@ -21,8 +21,11 @@ public class Orders extends BaseTimeEntity {
     @Column(nullable = false)
     private Long itemId;
 
-    @Column(nullable = false)
-    private Long addressId;
+    @Column(nullable = false, length = 300)
+    private String address;
+
+    @Column(nullable = false, length = 50)
+    private String telephone;
 
     @Column(length = 10, nullable = false)
     private Integer quantity;
@@ -31,11 +34,12 @@ public class Orders extends BaseTimeEntity {
     private Long totalPrice;
 
     @Builder
-    public Orders(Long id, Long userId, Long itemId, Long addressId, Integer quantity, Long totalPrice) {
+    public Orders(Long id, Long userId, Long itemId, String address, String telephone,Integer quantity, Long totalPrice) {
         this.id = id;
         this.userId = userId;
         this.itemId = itemId;
-        this.addressId = addressId;
+        this.address = address;
+        this.telephone = telephone;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
     }
