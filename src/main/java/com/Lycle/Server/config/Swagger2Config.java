@@ -11,8 +11,8 @@ public class Swagger2Config {
     @Bean
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
-                .group("v1-definition")
-                .pathsToMatch("/api/**")
+                .group("Lycle")
+                .pathsToMatch("/**")
                 .build();
     }
 

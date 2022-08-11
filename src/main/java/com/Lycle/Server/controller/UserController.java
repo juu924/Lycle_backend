@@ -1,11 +1,14 @@
 package com.Lycle.Server.controller;
 
+import com.Lycle.Server.config.auth.UserPrincipal;
 import com.Lycle.Server.dto.BasicResponse;
 import com.Lycle.Server.dto.User.UserJoinDto;
+import com.Lycle.Server.dto.User.UserLoginDto;
 import com.Lycle.Server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -17,24 +20,26 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseEntity<BasicResponse> joinUser(@RequestBody UserJoinDto userJoinDto) {
-        userService.saveUser(userJoinDto);
         BasicResponse joinUserResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.CREATED)
                 .message("회원가입이 완료되었습니다.")
+                .count(1)
+                .result(Collections.singletonList(userService.saveUser(userJoinDto)))
                 .build();
         return new ResponseEntity<>(joinUserResponse, joinUserResponse.getHttpStatus());
 
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<BasicResponse> searchUser(@RequestParam String email, @RequestParam String password) {
+    @PostMapping("/login")
+    public ResponseEntity<BasicResponse> loginUser(@RequestBody UserLoginDto userLoginDto) {
+
         BasicResponse searchUser = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("로그인에 성공했습니다.")
                 .count(1)
-                .result(Collections.singletonList(userService.searchUser(email,password)))
+                .token(userService.loginUser(userLoginDto))
                 .build();
         return new ResponseEntity<>(searchUser, searchUser.getHttpStatus());
     }
@@ -43,7 +48,7 @@ public class UserController {
     public ResponseEntity<BasicResponse> verifyEmail(@RequestParam String email) {
         BasicResponse verifyResponse;
 
-        if (userService.verifyEmail(email) == true) {
+        if (userService.verifyEmail(email)) {
             verifyResponse = BasicResponse.builder()
                     .code(HttpStatus.CONFLICT.value())
                     .httpStatus(HttpStatus.CONFLICT)
@@ -64,11 +69,11 @@ public class UserController {
     @GetMapping("/verify/nickname")
     public ResponseEntity<BasicResponse> verifyNickname(@RequestParam String nickname) {
         BasicResponse verifyResponse;
-        if (userService.verifyNickname(nickname) == true) {
+        if (userService.verifyNickname(nickname)) {
             verifyResponse = BasicResponse.builder()
                     .code(HttpStatus.CONFLICT.value())
                     .httpStatus(HttpStatus.CONFLICT)
-                    .message("이미 사용 중인 이메일 입니다.")
+                    .message("이미 사용 중인 닉네임 입니다.")
                     .build();
 
         } else {
@@ -82,10 +87,10 @@ public class UserController {
         return new ResponseEntity<>(verifyResponse, verifyResponse.getHttpStatus());
     }
 
-    @GetMapping("/friend")
+    @GetMapping("/user/friend")
     public ResponseEntity<BasicResponse> searchFriend(@RequestParam String nickname) {
         BasicResponse response;
-        if (userService.verifyNickname(nickname) == true) {
+        if (userService.verifyNickname(nickname)) {
             response = BasicResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -101,20 +106,33 @@ public class UserController {
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
 
-    @GetMapping("/profile")
-    public ResponseEntity<BasicResponse> searchProfile(@RequestParam Long id){
+
+    @PutMapping("/user/friend")
+    public ResponseEntity<BasicResponse> addFriend(Authentication authentication, @RequestParam String nickname) {
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        userService.addFriends(userPrincipal.getId(), nickname);
+        BasicResponse basicResponse;
+        basicResponse = BasicResponse.builder()
+                .count(HttpStatus.CREATED.value())
+                .httpStatus(HttpStatus.CREATED)
+                .message("사용자와 친구 맺기가 완료 되었습니다.")
+                .build();
+
+        return new ResponseEntity<>(basicResponse, basicResponse.getHttpStatus());
+    }
+
+    @GetMapping("/user/profile")
+    public ResponseEntity<BasicResponse> searchProfile(Authentication authentication) {
         BasicResponse profileResponse;
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         profileResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .message("회원 정보 조회가 완료되었습니다.")
                 .count(1)
-                .result(Collections.singletonList(userService.searchProfile(id)))
+                .result(Collections.singletonList(userService.searchProfile(userPrincipal.getId())))
                 .build();
         return new ResponseEntity<>(profileResponse, profileResponse.getHttpStatus());
     }
-
-
-
 
 }

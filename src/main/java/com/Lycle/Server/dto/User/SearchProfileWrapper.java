@@ -1,11 +1,10 @@
 package com.Lycle.Server.dto.User;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
 
 public class SearchProfileWrapper {
     private String nickname;
