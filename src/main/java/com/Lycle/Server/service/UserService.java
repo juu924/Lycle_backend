@@ -5,9 +5,11 @@ import com.Lycle.Server.config.auth.token.JwtTokenProvider;
 import com.Lycle.Server.domain.User.User;
 import com.Lycle.Server.domain.jpa.UserRepository;
 import com.Lycle.Server.dto.User.SearchProfileWrapper;
+import com.Lycle.Server.dto.User.UpdateInfoDto;
 import com.Lycle.Server.dto.User.UserJoinDto;
 import com.Lycle.Server.dto.User.UserLoginDto;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +76,14 @@ public class UserService {
             return 0L;
         }
         return -1L;
+    }
+
+
+    @Transactional
+    public void updateInfo(Long id, UpdateInfoDto updateInfoDto){
+        User user = userRepository.findById(id).orElseThrow(()
+                -> new IllegalIdentifierException("존재하지 않는 회원 입니다."));
+        user.updateInfo(updateInfoDto.getNickname(), updateInfoDto.getPassword());
     }
 
 }

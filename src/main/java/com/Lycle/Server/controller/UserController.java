@@ -2,6 +2,7 @@ package com.Lycle.Server.controller;
 
 import com.Lycle.Server.config.auth.UserPrincipal;
 import com.Lycle.Server.dto.BasicResponse;
+import com.Lycle.Server.dto.User.UpdateInfoDto;
 import com.Lycle.Server.dto.User.UserJoinDto;
 import com.Lycle.Server.dto.User.UserLoginDto;
 import com.Lycle.Server.service.UserService;
@@ -135,4 +136,16 @@ public class UserController {
         return new ResponseEntity<>(profileResponse, profileResponse.getHttpStatus());
     }
 
+
+    @PutMapping("/user/profile")
+    public ResponseEntity<BasicResponse> updateInfo(Authentication authentication, UpdateInfoDto updateInfoDto){
+        UserPrincipal userPrincipal = (UserPrincipal) authentication;
+        userService.updateInfo(userPrincipal.getId(), updateInfoDto);
+        BasicResponse updateResponse = BasicResponse.builder()
+                .code(HttpStatus.CREATED.value())
+                .httpStatus(HttpStatus.CREATED)
+                .message("회원정보 수정이 완료되었습니다.")
+                .build();
+        return new ResponseEntity<>(updateResponse, updateResponse.getHttpStatus());
+    }
 }
