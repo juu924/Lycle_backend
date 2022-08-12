@@ -41,12 +41,4 @@ public class Activity extends BaseTimeEntity {
         this.rewardChecked = rewardChecked;
     }
 
-    public void update(String category, String activityTime ,boolean finishChecked, boolean rewardChecked){
-        this.category = category;
-        this.activityTime = activityTime;
-        this.finishChecked = finishChecked;
-        this.rewardChecked = rewardChecked;
-    }
-
-
 }
