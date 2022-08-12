@@ -20,6 +20,7 @@ public class UserPrincipal implements UserDetails {
     private Long id;
     private String email;
     private String password;
+    private Role role;
     private Collection<? extends GrantedAuthority> authorities;
 
     @Override
@@ -43,15 +44,8 @@ public class UserPrincipal implements UserDetails {
         return this.user.getNickname();
     }
 
-    public List<String> getRoles(){
-        List<String> roles = new ArrayList<>();
-        if (user.getRoleKey().equals("ROLE_ADMIN")) {
-            roles.add(Role.USER.getKey());
+    public Role getUserRole() { return this.user.getRole();}
 
-        }
-        roles.add(user.getRoleKey());
-        return roles;
-    }
 
     public String getEmail(){
         return this.user.getEmail();

@@ -46,7 +46,7 @@ public class ActivityController {
         return new ResponseEntity<>(activityResponse,activityResponse.getHttpStatus());
     }
 
-    @GetMapping("/user/activity/{userId}")
+    @GetMapping("/user/activity")
     public ResponseEntity<BasicResponse> searchAllActivity(Authentication authentication){
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         BasicResponse allActivity = BasicResponse.builder()

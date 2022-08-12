@@ -2,6 +2,7 @@ package com.Lycle.Server.service;
 
 import com.Lycle.Server.config.auth.UserPrincipal;
 import com.Lycle.Server.config.auth.token.JwtTokenProvider;
+import com.Lycle.Server.domain.User.Role;
 import com.Lycle.Server.domain.User.User;
 import com.Lycle.Server.domain.jpa.UserRepository;
 import com.Lycle.Server.dto.User.SearchProfileWrapper;
@@ -45,7 +46,7 @@ public class UserService {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-        return jwtTokenProvider.createToken(userPrincipal.getEmail(),userPrincipal.getRoles());
+        return jwtTokenProvider.createToken(userPrincipal.getEmail(),userPrincipal.getRole());
     }
 
 
