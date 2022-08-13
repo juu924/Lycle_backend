@@ -11,6 +11,7 @@ import com.Lycle.Server.dto.User.UserJoinDto;
 import com.Lycle.Server.dto.User.UserLoginDto;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,24 +30,24 @@ public class UserService {
     public Long saveUser(UserJoinDto userJoinDto) {
         //최초 가입시 일반 사용자로 설정
         return userRepository.save(User.builder()
-                        .email(userJoinDto.getEmail())
-                        .password(passwordEncoder.encode(userJoinDto.getPassword()))
-                        .nickname(userJoinDto.getNickname())
-                        .role(USER)
-                        .build()
-                ).getId();
+                .email(userJoinDto.getEmail())
+                .password(passwordEncoder.encode(userJoinDto.getPassword()))
+                .nickname(userJoinDto.getNickname())
+                .role(USER)
+                .build()
+        ).getId();
     }
 
     @Transactional
-    public String loginUser(UserLoginDto userLoginDto){
+    public String loginUser(UserLoginDto userLoginDto) {
         User user = userRepository.findByEmail(userLoginDto.getEmail()).orElseThrow(
-                ()-> new IllegalArgumentException("가입되지 않은 이메일 입니다."));
-        UserPrincipal userPrincipal = new UserPrincipal(user);
-        if (!passwordEncoder.matches(userLoginDto.getPassword() ,user.getPassword())) {
+                () -> new IllegalArgumentException("가입되지 않은 이메일 입니다."));
+
+        if (!passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-        return jwtTokenProvider.createToken(userPrincipal.getEmail(),userPrincipal.getRole());
+        return jwtTokenProvider.createToken(user);
     }
 
 
@@ -81,7 +82,7 @@ public class UserService {
 
 
     @Transactional
-    public void updateInfo(Long id, UpdateInfoDto updateInfoDto){
+    public void updateInfo(Long id, UpdateInfoDto updateInfoDto) {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalIdentifierException("존재하지 않는 회원 입니다."));
         user.updateInfo(updateInfoDto.getNickname(), updateInfoDto.getPassword());

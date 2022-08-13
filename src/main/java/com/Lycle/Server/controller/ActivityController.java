@@ -17,20 +17,24 @@ import java.util.Collections;
 public class ActivityController {
     private final ActivityService activityService;
 
+
     /*
     //운동 시작 시간 기록
-    @PostMapping("/user/activity")
+    @PostMapping("/user/test")
     public ResponseEntity<BasicResponse> startActivity(Authentication authentication){
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        activityService.startActivity(userPrincipal.getId());
         BasicResponse activityResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.CREATED)
                 .message("챌린지 시작 시간이 기록되었습니다.")
+                .count(1)
+                .result(Collections.singletonList(userPrincipal.getEmail()))
                 .build();
         return new ResponseEntity<>(activityResponse,activityResponse.getHttpStatus());
     }
+
      */
+
 
     //챌린지 기록
     @PostMapping("/user/activity")

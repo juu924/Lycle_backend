@@ -3,7 +3,8 @@ package com.Lycle.Server.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
+
+import javax.persistence.*;;
 
 @NoArgsConstructor
 @Entity
@@ -32,6 +33,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
 
     @Builder
     public User(Long id, String email,String password, String nickname, Long sharedId, Long totalTime, Role role){
