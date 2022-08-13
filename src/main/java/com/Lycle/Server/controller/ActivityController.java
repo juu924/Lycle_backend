@@ -39,7 +39,7 @@ public class ActivityController {
     //챌린지 기록
     @PostMapping("/user/activity")
     public ResponseEntity<BasicResponse> saveActivity(Authentication authentication, @RequestBody RequestActivityDto requestActivityDto){
-        UserPrincipal userPrincipal = (UserPrincipal) authentication;
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         BasicResponse activityResponse = BasicResponse.builder()
                 .code(HttpStatus.CREATED.value())
                 .httpStatus(HttpStatus.CREATED)

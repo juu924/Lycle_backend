@@ -55,5 +55,9 @@ public class User {
         this.password = password;
     }
 
+    public void updateFriend(Long sharedId){
+        this.sharedId = sharedId;
+    }
+
 
 }

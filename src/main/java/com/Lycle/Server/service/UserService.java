@@ -68,13 +68,16 @@ public class UserService {
 
     @Transactional
     public Long addFriends(Long id, String nickname) {
-        Long sharedId = userRepository.findUserByNickname(nickname);
-        if (sharedId != 0L) {
-            //현재 user 테이블 update
-            userRepository.updateUserSharedId(id, sharedId);
-            //공유하고자 하는 user 테이블 업데이트
-            userRepository.updateUserSharedId(sharedId, id);
 
+        User me = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 사용자 입니다."));
+
+        User friends = userRepository.findUserByNickname(nickname).orElseThrow(
+                ()-> new IllegalArgumentException("친구 맺기가 불가능 합니다."));
+        if (friends.getId() != null) {
+            //현재 user 테이블 update
+             me.updateFriend(friends.getId());
+            //공유하고자 하는 user 테이블 업데이트
+            friends.updateFriend(me.getId());
             return 0L;
         }
         return -1L;
