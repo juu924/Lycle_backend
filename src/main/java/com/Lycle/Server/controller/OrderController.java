@@ -1,7 +1,6 @@
 package com.Lycle.Server.controller;
 
 import com.Lycle.Server.config.auth.UserPrincipal;
-import com.Lycle.Server.domain.User.User;
 import com.Lycle.Server.dto.BasicResponse;
 import com.Lycle.Server.dto.Order.MakeOrderDto;
 import com.Lycle.Server.dto.Order.RequestOrderDto;
