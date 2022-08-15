@@ -103,7 +103,18 @@ public class UserService {
     public void updateInfo(Long id, UpdateInfoDto updateInfoDto) {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalIdentifierException("존재하지 않는 회원 입니다."));
-        user.updateInfo(updateInfoDto.getNickname(), updateInfoDto.getPassword());
+        //닉네임과 비빌번호 둘 다 변경
+        if(updateInfoDto.getNickname() != null && updateInfoDto.getPassword() != null){
+            userRepository.updateNickname(id, updateInfoDto.getNickname());
+            userRepository.updatePassword(id, updateInfoDto.getPassword());
+            //비밀번호만 변경
+        }else if(updateInfoDto.getNickname() == null && updateInfoDto.getPassword() != null){
+            userRepository.updatePassword(id, updateInfoDto.getPassword());
+            //닉네임만 변경
+        }else if(updateInfoDto.getNickname() != null && updateInfoDto.getPassword()==null){
+            userRepository.updateNickname(id,updateInfoDto.getNickname());
+        }
+       
     }
 
     @Transactional
@@ -126,5 +137,6 @@ public class UserService {
 
         user.updateTime(diffDays);
     }
+
 
 }
