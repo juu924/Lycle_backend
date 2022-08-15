@@ -16,10 +16,10 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     @Transactional
-    public Long makeOrder(MakeOrderDto makeOrderDto) {
+    public Long makeOrder(Long id,MakeOrderDto makeOrderDto) {
         return orderRepository.save(Orders.builder()
                         .itemId(makeOrderDto.getItemId())
-                        .userId(makeOrderDto.getUserId())
+                        .userId(id)
                         .quantity(makeOrderDto.getQuantity())
                         .totalPrice(makeOrderDto.getTotalPrice())
                 .build()).getId();
@@ -36,7 +36,7 @@ public class OrderService {
         Orders order = orderRepository.findById(requestOrderDto.getId())
                 .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 주문 입니다."));
 
-        order.updateOrder(requestOrderDto.getAddress(), requestOrderDto.getTelephone());
+        order.updateOrder(requestOrderDto.getReceiver(), requestOrderDto.getAddress(), requestOrderDto.getTelephone());
         return order.getId();
     }
 
