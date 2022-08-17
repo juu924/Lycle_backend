@@ -28,7 +28,7 @@ public class UserController {
     private final RewardService rewardService;
 
     @PostMapping("/join")
-    public ResponseEntity<BasicResponse> joinUser(@RequestBody UserJoinDto userJoinDto) {
+    public ResponseEntity<BasicResponse> joinUser(@RequestBody UserJoinDto userJoinDto) throws JSONException, IOException {
         BasicResponse joinUserResponse = BasicResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.CREATED)
@@ -125,6 +125,7 @@ public class UserController {
         return new ResponseEntity<>(updateResponse, updateResponse.getHttpStatus());
     }
 
+    //메인화면 조회
     @GetMapping("/user/main")
     public ResponseEntity<BasicResponse> loadMain(Authentication authentication) throws JSONException, IOException {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
@@ -134,7 +135,9 @@ public class UserController {
             //내 프로필과 친구 프로필을 HashMap에 담아서 클라이언트에게 전송
             result.put("me", userService.searchProfile(userPrincipal.getId()));
             result.put("friend", userService.searchProfile(userPrincipal.getSharedId()));
-            result.put("reward", rewardService.getReward(userPrincipal.getEmail()));
+            result.put("reward", rewardService.getReward(userPrincipal.getId()));
+            result.put("request_check", activityService.checkRequestReward(userPrincipal.getId()));
+            result.put("friend_request", activityService.checkFriendReward(userPrincipal.getSharedId()));
             mainResponse = BasicResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
@@ -143,7 +146,11 @@ public class UserController {
                     .build();
         }else{
             result.put("me", userService.searchProfile(userPrincipal.getId()));
-            result.put("reward", rewardService.getReward(userPrincipal.getEmail()));
+            result.put("friend", null);
+            result.put("reward", rewardService.getReward(userPrincipal.getId()));
+            result.put("request_check", activityService.checkRequestReward(userPrincipal.getId()));
+            result.put("friend_request", activityService.checkFriendReward(userPrincipal.getSharedId()));
+
             mainResponse = BasicResponse.builder()
                     .code(HttpStatus.OK.value())
                     .httpStatus(HttpStatus.OK)
