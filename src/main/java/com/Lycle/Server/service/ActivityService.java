@@ -37,15 +37,19 @@ public class ActivityService {
     }
 
     @Transactional
-    public void shareActivity(Long activityId){
+    public boolean shareActivity(Long activityId){
         Activity activity = activityRepository.findById(activityId).orElseThrow(()->
                 new IllegalArgumentException("존재하지 않는 챌린지 입니다."));
-        activity.updateRequestReward(true);
+        if(activityRepository.existsActivityByActivityTime(activity.getActivityTime()) < 1){
+            activity.updateRequestReward(true);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
     public Long saveReward(Long id, Long activityId, int point) throws JSONException, IOException {
-        Long reward = 0L;
+        Long reward;
 
         //로그인 한 유저의 정보 먼저 찾기
         User me =  userRepository.findById(id).orElseThrow(()

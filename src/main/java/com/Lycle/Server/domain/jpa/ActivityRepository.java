@@ -14,10 +14,14 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>{
     List<SearchActivityWrapper> findAllByUserIdOrderByCreatedDateDesc(Long userId);
 
     //요청하지 않은 리워드 있을 때
-    @Query(value = "select count(a.id) from activity a where a.request_reward=0" , nativeQuery = true)
-    Long findActivityByUserId(Long id);
+    @Query(value = "select count(a.id) from activity a where a.request_reward=0 and a.user_id=id" , nativeQuery = true)
+    Integer findActivityByUserId(Long id);
 
     //친구가 적립받지 못한 리워드가 있을 때
-    @Query(value = "select count(a.id) from activity a where a.request_reward=1 and a.reward_checked=0", nativeQuery = true)
-    Long findActivityById(Long id);
+    @Query(value = "select count(a.id) from activity a where a.request_reward=1 and a.reward_checked=0 and a.user_id=id", nativeQuery = true)
+    Integer findActivityById(Long id);
+
+    //일자별로 요청된 리워드가 있는지 조회
+    @Query(value = "select count(a.id) from activity a where a.request_reward=1 and a.created_date=:activityTime", nativeQuery = true)
+    Integer existsActivityByActivityTime(String activityTime);
 }
