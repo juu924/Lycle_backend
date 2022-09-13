@@ -6,6 +6,7 @@ import com.Lycle.Server.dto.BasicResponse;
 import com.Lycle.Server.service.ActivityService;
 import com.Lycle.Server.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import java.util.Collections;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class ActivityController {
     private final ActivityService activityService;
     private final UserService userService;
@@ -32,7 +34,7 @@ public class ActivityController {
                 .result(Collections.singletonList(activityService.saveActivity(userPrincipal.getId() ,requestActivityDto)))
                 .build();
 
-        //활동일 수정
+        //활동일 업데이트
         userService.updateTime(userPrincipal.getId());
 
         return new ResponseEntity<>(activityResponse,activityResponse.getHttpStatus());
