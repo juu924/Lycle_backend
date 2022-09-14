@@ -15,8 +15,8 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>{
     List<SearchActivityWrapper> findAllByUserIdOrderByCreatedDateDesc(Long userId);
 
     //요청하지 않은 리워드 있을 때
-    @Query(value = "select count(a.id) from activity a where a.request_reward=0 and a.user_id=:id" , nativeQuery = true)
-    Long findActivityByRequestRewardAndUserId(Long id);
+    @Query(value = "select count(a.id) from activity a where a.request_reward=0 and a.user_id=:id and a.created_date=:activityTime" , nativeQuery = true)
+    Long findActivityByRequestRewardAndUserId(Long id, String activityTime);
 
     //오늘의 챌린지 완료 여부
     @Query(value = "select count(a.id) from activity a " +

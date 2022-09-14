@@ -3,12 +3,17 @@ package com.Lycle.Server.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@DynamicInsert
+@DynamicUpdate
 public class Orders extends BaseTimeEntity {
 
     @Id
@@ -36,8 +41,12 @@ public class Orders extends BaseTimeEntity {
     @Column(nullable = false)
     private Long totalPrice;
 
+    @ColumnDefault("0")
+    private boolean orderState;
+
     @Builder
-    public Orders(Long id, Long userId, Long itemId, String address, String receiver, String telephone, Integer quantity, Long totalPrice) {
+    public Orders(Long id, Long userId, Long itemId, String address, String receiver, String telephone,
+                  Integer quantity, Long totalPrice, boolean orderState) {
         this.id = id;
         this.userId = userId;
         this.itemId = itemId;
@@ -46,6 +55,7 @@ public class Orders extends BaseTimeEntity {
         this.telephone = telephone;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
+        this.orderState = orderState;
     }
 
 
@@ -54,4 +64,9 @@ public class Orders extends BaseTimeEntity {
         this.address = address;
         this.telephone = telephone;
     }
+
+    public void updateState(boolean orderState){
+        this.orderState = orderState;
+    }
+
 }

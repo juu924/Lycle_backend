@@ -54,6 +54,8 @@ public class OrderService {
         orderInfo.put("orderId", order.getId());
         orderInfo.put("pointInfo", pointInfo);
 
+        order.updateState(true);
+
         return orderInfo;
     }
 

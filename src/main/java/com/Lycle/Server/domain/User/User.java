@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-
 
 import javax.persistence.*;
 
@@ -44,7 +42,7 @@ public class User extends BaseTimeEntity {
         this.password = password;
         this.nickname = nickname;
         this.sharedId = sharedId;
-        this.totalTime = totalTime;
+        this.totalTime = this.totalTime == null ? 0 : this.totalTime;
         this.role = role;
     }
 

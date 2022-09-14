@@ -85,8 +85,19 @@ public class ActivityService {
     //요청하지 않은 리워드가 있는지 확인
     @Transactional
     public boolean checkRequestReward(Long id){
-        if(activityRepository.findActivityByRequestRewardAndUserId(id) > 1L){
-            return true;
+        //로그인 한 일자 얻어오기
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter nowFormatter = DateTimeFormatter.ofPattern("yy/MM/dd");
+        String formattedNow = now.format(nowFormatter);
+
+        //일자별로 요청된 리워드가 있으면
+        if(activityRepository.findActivityByActivityTimeAndRequestReward(id,formattedNow) > 0L){
+            return false;
+        }else{
+            //일자별로 요청된 리워드가 없는데, 요청되지 않은 챌린지가 있으면
+            if(activityRepository.findActivityByRequestRewardAndUserId(id,formattedNow) > 0L){
+                return true;
+            }
         }
         return false;
     }
@@ -94,7 +105,7 @@ public class ActivityService {
     //친구가 적립받지 못한 리워드가 있는지 확인
     @Transactional
     public boolean checkFriendReward(Long sharedId){
-        if(activityRepository.findActivityById(sharedId) > 1L){
+        if(activityRepository.findActivityById(sharedId) < 0L){
             return true;
         }
         return false;
@@ -123,5 +134,7 @@ public class ActivityService {
         }
         return false;
     }
+
+
     
 }
